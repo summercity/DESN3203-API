@@ -27,3 +27,8 @@ app.post('/api/contact', function (req, res) {
 	fs.writeFileSync('contacts.json', JSON.stringify(obj));
 	res.send(contact);
 });
+
+
+app.get('/api/contact/all', function (req, res) {
+    res.send(obj);
+});
