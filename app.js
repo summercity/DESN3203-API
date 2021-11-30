@@ -40,7 +40,7 @@ app.post('/api/contact', function (req, res) {
         validation = {...validation, message: "Please input a message!"}
     }
 
-    if (validation) {
+    if (validation === true) {
         obj.push(contact);
 	    fs.writeFileSync('contacts.json', JSON.stringify(obj));
     }
