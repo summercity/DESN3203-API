@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 
+var cors = require('cors');
+
+app.use(cors());
 app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 var fs = require('fs'); //require fs module
@@ -23,9 +26,27 @@ app.post('/api/contact', function (req, res) {
         name: req.body.name,
         message: req.body.message,
 	};
-	obj.push(contact);
-	fs.writeFileSync('contacts.json', JSON.stringify(obj));
-	res.send(contact);
+
+    let validation = true;
+    if (req.body.name == '') {
+        validation = {...validation, name: "Please input your name!"}
+    } else if (!isNaN(req.body.name.charAt(0))) {
+        validation = {...validation, name: "Name should not start with number"}
+    }
+    if (req.body.email == '') {
+        validation = {...validation, email: "Please input your e-mail!"}
+    }
+    if (req.body.message == '') {
+        validation = {...validation, message: "Please input a message!"}
+    }
+
+    if (validation) {
+        obj.push(contact);
+	    fs.writeFileSync('contacts.json', JSON.stringify(obj));
+    }
+
+    res.send(validation);
+    
 });
 
 
