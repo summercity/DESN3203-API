@@ -28,15 +28,15 @@ app.post('/api/contact', function (req, res) {
 	};
 
     let validation = true;
-    if (req.body.name == '') {
+    if (req.body.name == '' || !req.body.name) {
         validation = {...validation, name: "Please input your name!"}
     } else if (!isNaN(req.body.name.charAt(0))) {
         validation = {...validation, name: "Name should not start with number"}
     }
-    if (req.body.email == '') {
+    if (req.body.email == '' || !req.body.email) {
         validation = {...validation, email: "Please input your e-mail!"}
     }
-    if (req.body.message == '') {
+    if (req.body.message == '' || !req.body.message) {
         validation = {...validation, message: "Please input a message!"}
     }
 
