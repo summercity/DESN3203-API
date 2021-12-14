@@ -9,10 +9,12 @@ app.use(express.urlencoded()); // to support URL-encoded bodies
 var fs = require('fs'); //require fs module
 
 const contactJSon = fs.readFileSync('contacts.json', 'utf-8');
+const employeeJSon = fs.readFileSync('employee.json', 'utf-8');
 let obj = JSON.parse(contactJSon);
+let objE = JSON.parse(employeeJSon);
 
 app.listen(process.env.PORT || 5000, () => {
- console.log("Server running on port 8000");
+ console.log("Server running on port 5000");
 });
 
 app.get("/api", (req, res, next) => {
@@ -52,4 +54,26 @@ app.post('/api/contact', function (req, res) {
 
 app.get('/api/contact/all', function (req, res) {
     res.send(obj);
+});
+
+app.post('/api/employee', function (req, res) {
+    
+    const employee = {
+		id: objE.length + 1,
+		firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        birthday: req.body.birthday,
+        profession: req.body.profession,
+        salary: req.body.salary,
+        company: req.body.company,
+    };
+    
+    objE.push(employee);
+    fs.writeFileSync('employee.json', JSON.stringify(objE));
+    res.send(employee);
+})
+
+
+app.get('/api/employee/all', function (req, res) {
+    res.send(objE);
 });
